@@ -3,25 +3,59 @@ import { Link } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { auth } from "../firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { useToast } from "@chakra-ui/react";
 
 function ResetPassword() {
   const { currentUser } = UserAuth();
   const [email, setEmail] = useState("");
   const [resetEmailSent, setResetEmailSent] = useState(false);
   const [error, setError] = useState("");
+  const toast = useToast();
 
   const handleResetPassword = async () => {
     setError(""); // Clear any previous errors
     setResetEmailSent(false); // Clear the reset email status
+
+    if (!email) {
+      // Display a validation error toast for missing email
+      toast({
+        title: "Error",
+        description: "Please enter your email address.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
 
     try {
       // Send a password reset email
       await sendPasswordResetEmail(auth, email);
       setResetEmailSent(true); // Set the state to true
       setEmail(""); // Clear the email field
+
+      // Display a success toast
+      toast({
+        title: "Success",
+        description:
+          "Password reset email sent successfully. Check your inbox.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
       // Handle error, e.g., display an error message
       setError("Error sending password reset email. Please try again later.");
+
+      // Display an error toast
+      toast({
+        title: "Error",
+        description:
+          "Error sending password reset email. Please try again later.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -52,12 +86,7 @@ function ResetPassword() {
             Send Reset Link
           </button>
         </div>
-        {resetEmailSent && (
-          <div className="text-green-600 mt-2">
-            Password reset email sent successfully. Check your inbox.
-          </div>
-        )}
-        {error && <div className="text-red-600 mt-2">{error}</div>}
+
         <div className="mt-4 font-semibold text-md text-slate-500 text-center md:text-left">
           Remember your password?{" "}
           <Link
