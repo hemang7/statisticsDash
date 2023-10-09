@@ -71,10 +71,11 @@ function SignUp() {
         isClosable: true,
       });
     } catch (e) {
-      setError(e.message);
+      const errorMessage = e.message.replace("Firebase:", "");
+      setError(errorMessage);
       toast({
         title: "Error",
-        description: e.message,
+        description: errorMessage,
         status: "error",
         duration: 5000,
         isClosable: true,
