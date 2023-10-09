@@ -129,17 +129,21 @@ function RowAnalysis({ rowData, headerKeys }) {
       )}
 
       <div className="py-3">
-        <div className="py-1">
-          <strong>Mean:</strong> {mean !== null ? mean.toFixed(2) : "N/A"}
-        </div>
-        <div className="py-1">
-          <strong>Standard Deviation:</strong>{" "}
-          {stdDev !== null ? stdDev.toFixed(2) : "N/A"}
-        </div>
-        <div className="py-1">
-          <strong>Standard Error:</strong>{" "}
-          {stdError !== null ? stdError.toFixed(2) : "N/A"}
-        </div>
+        {selectedRowData.length > 0 && (
+          <div>
+            <div className="py-1">
+              <strong>Mean:</strong> {mean !== null ? mean.toFixed(2) : "N/A"}
+            </div>
+            <div className="py-1">
+              <strong>Standard Deviation:</strong>{" "}
+              {stdDev !== null ? stdDev.toFixed(2) : "N/A"}
+            </div>
+            <div className="py-1">
+              <strong>Standard Error:</strong>{" "}
+              {stdError !== null ? stdError.toFixed(2) : "N/A"}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
